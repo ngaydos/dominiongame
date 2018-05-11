@@ -18,9 +18,9 @@ class Player:
         if len(self.deck.cards) < count:
             remaining = count - len(self.deck.cards)
             self.draw(len(self.deck.cards))
-            if len(self.discard.cards) < count:
+            if len(self.discard.cards) < remaining:
                 self.shuffle()
-                self.draw(len(deck.cards))
+                self.draw(len(self.deck.cards))
             else:
                 self.shuffle()
                 self.draw(remaining)
