@@ -2,9 +2,10 @@ import random
 
 class Game:
 
-    def __init__(self, player_count):
-        self.player_count = player_count
-
+    def __init__(self, players):
+        self.player_count = len(players)
+        self.store = Store()
+        self.players = players
 
 class Player:
 
@@ -42,9 +43,7 @@ class Player:
 class Deck:
 
     def __init__(self):
-        self.cards = [Card('copper', ['money'], 0, 0, 0, 1), Card('copper', ['money'], 0, 0, 0, 1), Card('copper', ['money'], 0, 0, 0, 1), Card('copper', ['money'], 0, 0, 0, 1),
-         Card('copper', ['money'], 0, 0, 0, 1), Card('copper', ['money'], 0, 0, 0, 1), Card('copper', ['money'], 0, 0, 0, 1), 
-         Card('estate', ['victorypoint'], 2, 0, 0, 0, 1), Card('estate', ['victorypoint'], 2, 0, 0, 0, 1), Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)]
+        self.cards = [copper, copper, copper, copper, copper, copper, copper, estate, estate, estate]
 
     def __call__(self):
         return [card.name for card in self.cards]
@@ -80,6 +79,17 @@ class Card:
     def __call__(self):
         return self.name
 
+copper = Card('copper', ['money'], 0, 0, 0, 1)
+silver = Card('silver', ['money'], 3, 0, 0, 2)
+gold = Card('gold', ['money'], 6, 0, 0, 3)
+estate = Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)
+duchy = Card('duchy', ['victorypoint'], 5, 0, 0, 0, 3)
+province = Card('province', ['victorypoint'], 8, 0, 0, 0, 6)
+
+class Store:
+    pass
+
+
 #Structural Notes:
 
 '''You could set up a card as a class containing data on cost, name, vps and possibly type. 
@@ -87,4 +97,3 @@ This makes playing the cards easier but generates some issues. Alternately you c
 systemic option and generate a specific function response for each card.
 
 I think to be able to use a machine learning system each card is going to need to be an instance of a card class.'''
-
