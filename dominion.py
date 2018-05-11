@@ -14,7 +14,7 @@ class Player:
         self.discard = Discard()
         self.vps = None
 
-    def draw(count = 1):
+    def draw(self, count = 1):
         if len(self.deck.cards) < count:
             remaining = count - len(self.deck.cards)
             self.draw(len(self.deck.cards))
@@ -29,7 +29,7 @@ class Player:
             self.hand.cards.append(card)
             self.deck.cards.remove(card)
 
-    def shuffle():
+    def shuffle(self):
         self.deck.cards.append(self.discard.cards)
         self.discard.cards = []
 
