@@ -31,8 +31,13 @@ class Player:
                 self.deck.cards.remove(card)
 
     def shuffle(self):
-        self.deck.cards.append(self.discard.cards)
+        self.deck.cards.append += self.discard.cards
         self.discard.cards = []
+
+
+    def discard_hand(self):
+        self.discard.cards += self.hand.cards
+        self.hand.cards = []
 
 class Deck:
 
