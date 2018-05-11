@@ -25,9 +25,10 @@ class Player:
                 self.shuffle()
                 self.draw(remaining)
         else:
-            card = random.choice(self.deck.cards)
-            self.hand.cards.append(card)
-            self.deck.cards.remove(card)
+            for val in range(count):
+                card = random.choice(self.deck.cards)
+                self.hand.cards.append(card)
+                self.deck.cards.remove(card)
 
     def shuffle(self):
         self.deck.cards.append(self.discard.cards)
