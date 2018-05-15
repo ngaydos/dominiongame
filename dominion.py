@@ -7,6 +7,10 @@ class Game:
         self.store = Store()
         self.players = players
 
+    def play_game(self):
+        for player in self.players:
+            player.take_turn()
+
 class Player:
 
     def __init__(self):
@@ -69,6 +73,7 @@ class Card:
 
     def __init__(self, name, ctypes, cost, actions, draw, gold, vps =0):
         self.name = name
+        #card types as a list allows for the multiple card types introduced in intrigue
         self.ctypes = ctypes
         self.cost = cost
         self.actions = actions
@@ -96,4 +101,5 @@ class Store:
 This makes playing the cards easier but generates some issues. Alternately you could go with the less
 systemic option and generate a specific function response for each card.
 
-I think to be able to use a machine learning system each card is going to need to be an instance of a card class.'''
+
+'''
