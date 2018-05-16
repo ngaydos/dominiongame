@@ -6,7 +6,7 @@ class Game:
     def __init__(self, players):
         #players is a list of player objects
         self.player_count = len(players)
-        self.store = Store()
+        self.store = create_store()
         self.players = deque(players)
 
     def play_game(self):
@@ -14,6 +14,7 @@ class Game:
             current_player = self.players.popleft()
             current_player.take_turn(self)
             self.players.append(current_player)
+
 
 
 class Player:
@@ -49,7 +50,7 @@ class Player:
         self.discard.cards += self.hand.cards
         self.hand.cards = []
 
-    def take_turn(game):
+    def take_turn(self, game):
         money_count = 0
         for card in self.hand:
             #eventually there should be a play function
@@ -66,6 +67,16 @@ class Player:
             self.buy(silver, game.store)
         elif money_count >= 2 and estate in game.store:
             self.buy(estate, game.store)
+        else:
+            self.buy(copper, game.store)
+
+    def buy(self, card, store):
+        #for now this function is simple but it eventually needs to be capable of checking if the card is in the store
+        #and check if the player has the available gold, manage the number of buys
+        #also you need a gain function eventually which would be similar, but work without caring about those things
+        if card in store:
+            self.discard.cards += card
+            store.remove(card)
 
 
 class Deck:
@@ -86,8 +97,8 @@ class Hand:
         return [card.name for card in self.cards]
 
     #eventually this should be handled as a play function
-    def discard(card, discard_pile):
-        discard_pile.append(card)
+    def discard(self, card, discard_pile):
+        discard_pile.cards.append(card)
         self.remove(card)
 
 
@@ -122,10 +133,18 @@ estate = Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)
 duchy = Card('duchy', ['victorypoint'], 5, 0, 0, 0, 3)
 province = Card('province', ['victorypoint'], 8, 0, 0, 0, 6)
 
-class Store:
-    pass
 
-
+def create_store():
+    store = []
+    for i in range(12):
+        store.append(estate)
+        store.append(duchy)
+        store.append(province)
+    for i in range(20):
+        store.append(copper)
+        store.append(silver)
+        store.append(gold)
+    return store
 #Structural Notes:
 
 '''You could set up a card as a class containing data on cost, name, vps and possibly type. 
