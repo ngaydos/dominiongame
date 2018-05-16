@@ -14,8 +14,8 @@ class Game:
             current_player = self.players.popleft()
             current_player.take_turn(self)
             self.players.append(current_player)
-
-
+        final_scores = [player.calculate_vps() for player in self.players]
+        return (self.players, final_scores)
 
 
 class Player:
@@ -53,7 +53,7 @@ class Player:
 
     def take_turn(self, game):
         money_count = 0
-        for card in self.hand:
+        for card in self.hand.cards:
             #eventually there should be a play function
             #eventually buy needs to check if the card is in the store rather than checking in this automated function
             money_count += card.money
@@ -70,13 +70,15 @@ class Player:
             self.buy(estate, game.store)
         else:
             self.buy(copper, game.store)
+        self.discard_hand()
+        self.draw(5)
 
     def buy(self, card, store):
         #for now this function is simple but it eventually needs to be capable of checking if the card is in the store
         #and check if the player has the available gold, manage the number of buys
         #also you need a gain function eventually which would be similar, but work without caring about those things
         if card in store:
-            self.discard.cards += card
+            self.discard.cards.append(card)
             store.remove(card)
 
     def calculate_vps(self):
@@ -87,6 +89,7 @@ class Player:
             vpcount += card.vps
         for card in self.deck.cards:
             vpcount += card.vps
+        return vpcount
 
 
 class Deck:
@@ -109,7 +112,7 @@ class Hand:
     #eventually this should be handled as a play function
     def discard(self, card, discard_pile):
         discard_pile.cards.append(card)
-        self.remove(card)
+        self.cards.remove(card)
 
 
 
@@ -123,14 +126,14 @@ class Discard:
 
 class Card:
 
-    def __init__(self, name, ctypes, cost, actions, draw, gold, vps =0):
+    def __init__(self, name, ctypes, cost, actions, draw, money, vps =0):
         self.name = name
         #card types as a list allows for the multiple card types introduced in intrigue
         self.ctypes = ctypes
         self.cost = cost
         self.actions = actions
         self.draw = draw
-        self.gold = gold
+        self.money = money
         self.vps = vps
 
     def __call__(self):
