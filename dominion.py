@@ -10,9 +10,10 @@ class Game:
         self.players = deque(players)
 
     def play_game(self):
+
         while province in self.store:
             current_player = self.players.popleft()
-            current_player.take_turn(self)
+            current_player.take_turn(self, current_player.is_bot)
             self.players.append(current_player)
         final_scores = [player.calculate_vps() for player in self.players]
         return (self.players, final_scores)
@@ -20,11 +21,13 @@ class Game:
 
 class Player:
 
-    def __init__(self):
+    def __init__(self, is_bot = True):
         self.hand = Hand()
         self.deck = Deck()
         self.discard = Discard()
+        self.is_bot = is_bot
         self.vps = None
+        self.current_money = 0
 
     def draw(self, count = 1):
         if len(self.deck.cards) < count:
@@ -51,27 +54,28 @@ class Player:
         self.discard.cards += self.hand.cards
         self.hand.cards = []
 
-    def take_turn(self, game):
-        money_count = 0
-        for card in self.hand.cards:
+    def take_turn(self, game, bot_player):
+        if bot_player:
+            for card in self.hand.cards:
+                self.hand.play(card, self)
             #eventually there should be a play function
             #eventually buy needs to check if the card is in the store rather than checking in this automated function
-            money_count += card.money
-            self.hand.discard(card, self.discard)
-        if money_count >= 8:
-            self.buy(province, game.store)
-        elif money_count >= 6 and gold in game.store:
-            self.buy(gold, game.store)
-        elif money_count >= 5 and duchy in game.store:
-            self.buy(duchy, game.store)
-        elif money_count >= 3 and silver in game.store:
-            self.buy(silver, game.store)
-        elif money_count >= 2 and estate in game.store:
-            self.buy(estate, game.store)
-        else:
-            self.buy(copper, game.store)
-        self.discard_hand()
-        self.draw(5)
+            if self.current_money >= 8:
+                self.buy(province, game.store)
+            elif self.current_money >= 6 and gold in game.store:
+                self.buy(gold, game.store)
+            elif self.current_money >= 5 and duchy in game.store:
+                self.buy(duchy, game.store)
+            elif self.current_money >= 3 and silver in game.store:
+                self.buy(silver, game.store)
+            elif self.current_money >= 2 and estate in game.store:
+                self.buy(estate, game.store)
+            else:
+                self.buy(copper, game.store)
+            self.discard_hand()
+            self.current_money = 0
+            self.draw(5)
+        #next step is setting up non-bot players
 
     def buy(self, card, store):
         #for now this function is simple but it eventually needs to be capable of checking if the card is in the store
@@ -108,6 +112,12 @@ class Hand:
 
     def __call__(self):
         return [card.name for card in self.cards]
+
+    def play(self, card, player):
+        player.draw(card.draw)
+        player.current_money += card.money
+        player.discard.cards.append(card)
+        self.cards.remove(card)
 
     #eventually this should be handled as a play function
     def discard(self, card, discard_pile):
