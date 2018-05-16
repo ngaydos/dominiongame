@@ -1,15 +1,19 @@
 import random
+from collections import deque
 
 class Game:
 
     def __init__(self, players):
+        #players is a list of player objects
         self.player_count = len(players)
         self.store = Store()
-        self.players = players
+        self.players = deque(players)
 
     def play_game(self):
-        for player in self.players:
-            player.take_turn()
+        while province in self.store:
+            current_player = self.players.popleft()
+            #take turn here
+            self.players.append(current_player)
 
 class Player:
 
