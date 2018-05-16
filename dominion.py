@@ -12,8 +12,9 @@ class Game:
     def play_game(self):
         while province in self.store:
             current_player = self.players.popleft()
-            #take turn here
+            current_player.take_turn(self)
             self.players.append(current_player)
+
 
 class Player:
 
@@ -48,6 +49,25 @@ class Player:
         self.discard.cards += self.hand.cards
         self.hand.cards = []
 
+    def take_turn(game):
+        money_count = 0
+        for card in self.hand:
+            #eventually there should be a play function
+            #eventually buy needs to check if the card is in the store rather than checking in this automated function
+            money_count += card.money
+            self.hand.discard(card, self.discard)
+        if money_count >= 8:
+            self.buy(province, game.store)
+        elif money_count >= 6 and gold in game.store:
+            self.buy(gold, game.store)
+        elif money_count >= 5 and duchy in game.store:
+            self.buy(duchy, game.store)
+        elif money_count >= 3 and silver in game.store:
+            self.buy(silver, game.store)
+        elif money_count >= 2 and estate in game.store:
+            self.buy(estate, game.store)
+
+
 class Deck:
 
     def __init__(self):
@@ -64,6 +84,13 @@ class Hand:
 
     def __call__(self):
         return [card.name for card in self.cards]
+
+    #eventually this should be handled as a play function
+    def discard(card, discard_pile):
+        discard_pile.append(card)
+        self.remove(card)
+
+
 
 class Discard:
 
