@@ -17,6 +17,7 @@ class Game:
 
 
 
+
 class Player:
 
     def __init__(self):
@@ -77,6 +78,15 @@ class Player:
         if card in store:
             self.discard.cards += card
             store.remove(card)
+
+    def calculate_vps(self):
+        vpcount = 0
+        for card in self.hand.cards:
+            vpcount += card.vps
+        for card in self.discard.cards:
+            vpcount += card.vps
+        for card in self.deck.cards:
+            vpcount += card.vps
 
 
 class Deck:
