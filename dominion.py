@@ -104,7 +104,8 @@ class Player:
     def play(self, card):
         if 'action' in card.ctypes:
             if self.available_actions <= 0:
-                return "out of actions"
+                print('out of actions')
+                return None
             else:
                 self.available_actions -= 1
         self.draw(card.draw)
@@ -185,12 +186,18 @@ gold = Card('gold', ['money'], 6, 0, 0, 3)
 estate = Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)
 duchy = Card('duchy', ['victorypoint'], 5, 0, 0, 0, 3)
 province = Card('province', ['victorypoint'], 8, 0, 0, 0, 6)
+village = Card('village', ['action'], 3, 2, 1, 0)
+smithy = Card('smithy', ['action'], 4, 0, 3, 0)
 
-string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 'duchy': duchy, 'province': province}
+string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 
+'duchy': duchy, 'province': province, 'smithy': smithy, 'village': village}
 
 
 def create_store():
     store = []
+    for i in range(10):
+        store.append(village)
+        store.append(smithy)
     for i in range(12):
         store.append(estate)
         store.append(duchy)
@@ -200,6 +207,14 @@ def create_store():
         store.append(silver)
         store.append(gold)
     return store
+
+if __name__ == '__main__':
+    #currently requires the commands to be typed in strings
+    player1 = Player(is_bot=False)
+    player2 = Player()
+    player3 = Player()
+    game = Game([player1, player2, player3])
+    game.play_game()
 
 
 '''Long term adjustments to be made:
@@ -212,4 +227,4 @@ def create_store():
 -Bots
     -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
 -Structure for cards that are special actions
--Trash
+-Trash'''
