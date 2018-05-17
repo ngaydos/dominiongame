@@ -28,6 +28,7 @@ class Player:
         self.is_bot = is_bot
         self.vps = None
         self.current_money = 0
+        self.draw(5)
 
     def draw(self, count = 1):
         if len(self.deck.cards) < count:
@@ -72,9 +73,29 @@ class Player:
                 self.buy(estate, game.store)
             else:
                 self.buy(copper, game.store)
-            self.discard_hand()
-            self.current_money = 0
-            self.draw(5)
+            self.end_turn()
+
+
+        else:
+            turn_end = False
+            while turn_end is False:
+                command = input('Type Command')
+                if command == "end turn":
+                    self.end_turn()
+                    turn_end = True
+                elif command == 'hand':
+                    print([card.name for card in self.hand.cards])
+                elif command == 'discard':
+                    print([card.name for card in self.discard.cards])
+                elif command == 'current money':
+                    print(self.current_money)
+                elif command[:4] == 'play':
+                    self.hand.play(string_to_card[command[5:]], self)
+
+    def end_turn(self):
+        self.discard_hand()
+        self.current_money = 0
+        self.draw(5)
         #next step is setting up non-bot players
 
     def buy(self, card, store):
@@ -156,6 +177,8 @@ estate = Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)
 duchy = Card('duchy', ['victorypoint'], 5, 0, 0, 0, 3)
 province = Card('province', ['victorypoint'], 8, 0, 0, 0, 6)
 
+string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 'duchy': duchy, 'province': province}
+
 
 def create_store():
     store = []
@@ -168,11 +191,3 @@ def create_store():
         store.append(silver)
         store.append(gold)
     return store
-#Structural Notes:
-
-'''You could set up a card as a class containing data on cost, name, vps and possibly type. 
-This makes playing the cards easier but generates some issues. Alternately you could go with the less
-systemic option and generate a specific function response for each card.
-
-
-'''
