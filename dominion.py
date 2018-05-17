@@ -58,8 +58,7 @@ class Player:
     def take_turn(self, game, bot_player):
         if bot_player:
             for card in self.hand.cards:
-                self.hand.play(card, self)
-            #eventually there should be a play function
+                self.play(card)
             #eventually buy needs to check if the card is in the store rather than checking in this automated function
             if self.current_money >= 8:
                 self.buy(province, game.store)
@@ -90,13 +89,20 @@ class Player:
                 elif command == 'current money':
                     print(self.current_money)
                 elif command[:4] == 'play':
-                    self.hand.play(string_to_card[command[5:]], self)
+                    self.play(string_to_card[command[5:]])
+                elif command[:3] == 'buy':
+                    self.buy(string_to_card[command[4:]], game.store)
 
     def end_turn(self):
         self.discard_hand()
         self.current_money = 0
         self.draw(5)
-        #next step is setting up non-bot players
+
+    def play(self, card):
+        self.draw(card.draw)
+        self.current_money += card.money
+        self.discard.cards.append(card)
+        self.hand.cards.remove(card)
 
     def buy(self, card, store):
         #for now this function is simple but it eventually needs to be capable of checking if the card is in the store
@@ -133,12 +139,6 @@ class Hand:
 
     def __call__(self):
         return [card.name for card in self.cards]
-
-    def play(self, card, player):
-        player.draw(card.draw)
-        player.current_money += card.money
-        player.discard.cards.append(card)
-        self.cards.remove(card)
 
     #eventually this should be handled as a play function
     def discard(self, card, discard_pile):
