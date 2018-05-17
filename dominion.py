@@ -29,6 +29,7 @@ class Player:
         self.vps = None
         self.current_money = 0
         self.draw(5)
+        self.available_actions = 0
 
     def draw(self, count = 1):
         if len(self.deck.cards) < count:
@@ -56,6 +57,7 @@ class Player:
         self.hand.cards = []
 
     def take_turn(self, game, bot_player):
+        self.available_actions = 1
         if bot_player:
             for card in self.hand.cards:
                 self.play(card)
@@ -78,7 +80,7 @@ class Player:
         else:
             turn_end = False
             while turn_end is False:
-                command = input('Type Command')
+                command = input('Type Command:')
                 if command == "end turn":
                     self.end_turn()
                     turn_end = True
@@ -96,11 +98,18 @@ class Player:
     def end_turn(self):
         self.discard_hand()
         self.current_money = 0
+        self.available_actions = 0
         self.draw(5)
 
     def play(self, card):
+        if 'action' in card.ctypes:
+            if self.available_actions <= 0:
+                return "out of actions"
+            else:
+                self.available_actions -= 1
         self.draw(card.draw)
         self.current_money += card.money
+        self.available_actions += card.actions
         self.discard.cards.append(card)
         self.hand.cards.remove(card)
 
@@ -191,3 +200,16 @@ def create_store():
         store.append(silver)
         store.append(gold)
     return store
+
+
+'''Long term adjustments to be made:
+-Need a play area
+    structure probably should be an easy change, move items to the play area when played, then move all items to discard at the end of the turn.
+-Add actions and action monitor
+-Add a buy monitor
+-Create an error if the player tries to buy something they can't
+    ValueError or not an actual code error, probably not an actual code error.
+-Bots
+    -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
+-Structure for cards that are special actions
+-Trash
