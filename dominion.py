@@ -8,6 +8,7 @@ class Game:
         self.player_count = len(players)
         self.store = create_store()
         self.players = deque(players)
+        self.store_items = set(self.store)
 
     def play_game(self):
 
@@ -17,6 +18,21 @@ class Game:
             self.players.append(current_player)
         final_scores = [player.calculate_vps() for player in self.players]
         return (self.players, final_scores)
+
+#possible structure is while game_over() == False and then have game_over check if provinces are gone. Need to check how
+#often the while loop would check the function
+#early testing isn't showing an issue with that, need to check dominion rulebook to confirm.
+    def game_over(self):
+        if province not in self.store:
+            return True
+        else:
+            missing_items = 0
+            for item in self.store_items:
+                if item not in self.store:
+                    missing_items += 1
+            if missing_items >= 3:
+                return True
+        return False
 
 
 class Player:
@@ -218,11 +234,11 @@ if __name__ == '__main__':
 
 
 '''Long term adjustments to be made:
+-Add end game condition related to three empty store slots
 -Need a play area
     structure probably should be an easy change, move items to the play area when played, then move all items to discard at the end of the turn.
--Add actions and action monitor
 -Add a buy monitor
--Create an error if the player tries to buy something they can't
+    Create an error if the player tries to buy something they can't
     ValueError or not an actual code error, probably not an actual code error.
 -Bots
     -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
