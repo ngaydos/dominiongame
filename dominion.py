@@ -12,7 +12,7 @@ class Game:
 
     def play_game(self):
 
-        while province in self.store:
+        while self.game_over() == False:
             current_player = self.players.popleft()
             current_player.take_turn(self, current_player.is_bot)
             self.players.append(current_player)
@@ -234,7 +234,7 @@ if __name__ == '__main__':
 
 
 '''Long term adjustments to be made:
--Add end game condition related to three empty store slots
+
 -Need a play area
     structure probably should be an easy change, move items to the play area when played, then move all items to discard at the end of the turn.
 -Add a buy monitor
