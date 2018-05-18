@@ -1,5 +1,6 @@
 import random
 from collections import deque
+from cards import *
 
 class Game:
 
@@ -46,6 +47,7 @@ class Player:
         self.current_money = 0
         self.draw(5)
         self.available_actions = 0
+        self.play_area = []
 
     def draw(self, count = 1):
         if len(self.deck.cards) < count:
@@ -115,6 +117,8 @@ class Player:
         self.discard_hand()
         self.current_money = 0
         self.available_actions = 0
+        self.discard.cards += self.play_area
+        self.play_area = []
         self.draw(5)
 
     def play(self, card):
@@ -127,7 +131,7 @@ class Player:
         self.draw(card.draw)
         self.current_money += card.money
         self.available_actions += card.actions
-        self.discard.cards.append(card)
+        self.play_area.append(card)
         self.hand.cards.remove(card)
 
     def buy(self, card, store):
@@ -170,8 +174,7 @@ class Hand:
     def discard(self, card, discard_pile):
         discard_pile.cards.append(card)
         self.cards.remove(card)
-
-
+        
 
 class Discard:
 
@@ -180,33 +183,6 @@ class Discard:
 
     def __call__(self):
         return [card.name for card in self.cards]
-
-class Card:
-
-    def __init__(self, name, ctypes, cost, actions, draw, money, vps =0):
-        self.name = name
-        #card types as a list allows for the multiple card types introduced in intrigue
-        self.ctypes = ctypes
-        self.cost = cost
-        self.actions = actions
-        self.draw = draw
-        self.money = money
-        self.vps = vps
-
-    def __call__(self):
-        return self.name
-
-copper = Card('copper', ['money'], 0, 0, 0, 1)
-silver = Card('silver', ['money'], 3, 0, 0, 2)
-gold = Card('gold', ['money'], 6, 0, 0, 3)
-estate = Card('estate', ['victorypoint'], 2, 0, 0, 0, 1)
-duchy = Card('duchy', ['victorypoint'], 5, 0, 0, 0, 3)
-province = Card('province', ['victorypoint'], 8, 0, 0, 0, 6)
-village = Card('village', ['action'], 3, 2, 1, 0)
-smithy = Card('smithy', ['action'], 4, 0, 3, 0)
-
-string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 
-'duchy': duchy, 'province': province, 'smithy': smithy, 'village': village}
 
 
 def create_store():
@@ -222,6 +198,7 @@ def create_store():
         store.append(copper)
         store.append(silver)
         store.append(gold)
+        store.append(curse)
     return store
 
 if __name__ == '__main__':
@@ -235,8 +212,7 @@ if __name__ == '__main__':
 
 '''Long term adjustments to be made:
 
--Need a play area
-    structure probably should be an easy change, move items to the play area when played, then move all items to discard at the end of the turn.
+-Play area seems to be working
 -Add a buy monitor
     Create an error if the player tries to buy something they can't
     ValueError or not an actual code error, probably not an actual code error.
