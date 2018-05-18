@@ -21,8 +21,7 @@ class Game:
         return (self.players, final_scores)
 
 #possible structure is while game_over() == False and then have game_over check if provinces are gone. Need to check how
-#often the while loop would check the function
-#early testing isn't showing an issue with that, need to check dominion rulebook to confirm.
+
     def game_over(self):
         if province not in self.store:
             return True
@@ -174,7 +173,7 @@ class Hand:
     def discard(self, card, discard_pile):
         discard_pile.cards.append(card)
         self.cards.remove(card)
-        
+
 
 class Discard:
 
@@ -219,4 +218,5 @@ if __name__ == '__main__':
 -Bots
     -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
 -Structure for cards that are special actions
+    Create a marker in cards (auto set to no, that checks if it is a special action, and if it is, creates a special object for it)
 -Trash'''
