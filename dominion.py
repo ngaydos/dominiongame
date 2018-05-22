@@ -40,6 +40,7 @@ class Player:
     def __init__(self, is_bot = True):
         self.hand = Hand()
         self.deck = Deck()
+        random.shuffle(self.deck.cards)
         self.discard = Discard()
         self.is_bot = is_bot
         self.vps = None
@@ -60,12 +61,12 @@ class Player:
                 self.draw(remaining)
         else:
             for val in range(count):
-                card = random.choice(self.deck.cards)
+                card = self.deck.cards.pop(-1)
                 self.hand.cards.append(card)
-                self.deck.cards.remove(card)
 
     def shuffle(self):
         self.deck.cards += self.discard.cards
+        random.shuffle(self.deck.cards)
         self.discard.cards = []
 
 

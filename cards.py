@@ -22,7 +22,7 @@ province = Card('province', ['victorypoint'], 8, 0, 0, 0, vps=6)
 curse = Card('curse', ['curse'], 0, 0, 0, 0, vps= -1)
 village = Card('village', ['action'], 3, 2, 1, 0)
 smithy = Card('smithy', ['action'], 4, 0, 3, 0)
-festival = Card('festival'['action'], 5, 2, 0, 2, buys = 1)
+festival = Card('festival', ['action'], 5, 2, 0, 2, buys = 1)
 laboratory = Card('laboratory',['action'], 5, 1, 2, 0)
 market = Card('market',['action'], 5, 1, 1, 1, buys = 1)
 
