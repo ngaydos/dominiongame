@@ -1,6 +1,6 @@
 class Card:
 
-    def __init__(self, name, ctypes, cost, actions, draw, money, buys= 0, vps =0):
+    def __init__(self, name, ctypes, cost, actions, draw, money, buys= 0, vps =0, special = None):
         self.name = name
         #card types as a list allows for the multiple card types introduced in intrigue
         self.ctypes = ctypes
@@ -9,6 +9,7 @@ class Card:
         self.draw = draw
         self.money = money
         self.vps = vps
+        self.special = special
 
     def __call__(self):
         return self.name
