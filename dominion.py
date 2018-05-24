@@ -14,7 +14,9 @@ class Game:
     def play_game(self):
 
         while self.game_over() == False:
+            #iterates through players one at a time until game_over == True
             current_player = self.players.popleft()
+            #any bots should have a take turn function to enable them to interact with the game and make them modular
             current_player.take_turn(self, current_player.is_bot)
             self.players.append(current_player)
         final_scores = [player.calculate_vps() for player in self.players]
@@ -61,6 +63,7 @@ class Player:
                 self.draw(remaining)
         else:
             for val in range(count):
+                #pop at -1 because it removes the leftmost element. Means that appending items puts them on the bottom of the deck.
                 card = self.deck.cards.pop(-1)
                 self.hand.cards.append(card)
 
@@ -213,11 +216,12 @@ if __name__ == '__main__':
 '''Long term adjustments to be made:
 
 -Play area seems to be working
+-Add structure for buys
 -Add a buy monitor
     Create an error if the player tries to buy something they can't
     ValueError or not an actual code error, probably not an actual code error.
 -Bots
     -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
 -Structure for cards that are special actions
-    Create a marker in cards (auto set to no, that checks if it is a special action, and if it is, creates a special object for it)
+    Cards now have a special attribute, just need to set up something for a before or after the card since some cards will care about it.
 -Trash'''
