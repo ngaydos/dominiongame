@@ -81,7 +81,7 @@ class Player:
         self.available_actions = 1
         if bot_player:
             for card in self.hand.cards:
-                self.play(card)
+                self.play(card, game)
             #eventually buy needs to check if the card is in the store rather than checking in this automated function
             if self.current_money >= 8:
                 self.buy(province, game.store)
@@ -112,7 +112,7 @@ class Player:
                 elif command == 'current money':
                     print(self.current_money)
                 elif command[:4] == 'play':
-                    self.play(string_to_card[command[5:]])
+                    self.play(string_to_card[command[5:]], game)
                 elif command[:3] == 'buy':
                     self.buy(string_to_card[command[4:]], game.store)
 
@@ -124,16 +124,20 @@ class Player:
         self.play_area = []
         self.draw(5)
 
-    def play(self, card):
+    def play(self, card, game):
         if 'action' in card.ctypes:
             if self.available_actions <= 0:
                 print('out of actions')
                 return None
             else:
                 self.available_actions -= 1
+        if card.special == 'early':
+            play_special(card.name, self, game)
         self.draw(card.draw)
         self.current_money += card.money
         self.available_actions += card.actions
+        if card.special == 'after':
+            play_special(card.name, self, game)
         self.play_area.append(card)
         self.hand.cards.remove(card)
 
