@@ -118,6 +118,9 @@ class Player:
                     self.play(string_to_card[command[5:]], game)
                 elif command[:3] == 'buy':
                     self.buy(string_to_card[command[4:]], game.store)
+                elif command == 'other hands':
+                    for player in game.players:
+                        print([card.name for card in player.hand.cards])
 
     def end_turn(self):
         self.discard_hand()
@@ -153,10 +156,13 @@ class Player:
         self.hand.cards.remove(card)
 
     def play_special(self, card, game):
-        pass
+        if card.name == 'council room':
+            for player in game.players:
+                player.draw(1)
 
     def buy(self, card, store):
         #checks if the player has available buys and if the card selected is in the store
+        #needs to check the play has enough gold
         if card in store and self.available_buys >= 1:
             self.discard.cards.append(card)
             store.remove(card)
@@ -214,12 +220,14 @@ class Discard:
 
 
 def create_store():
+    #eventually needs to be randomized and care about len(players), but that's more for eventual cleanup
     store = []
     for i in range(10):
         store.append(village)
         store.append(smithy)
         store.append(market)
         store.append(festival)
+        store.append(council_room)
     for i in range(12):
         store.append(estate)
         store.append(duchy)
@@ -244,11 +252,9 @@ if __name__ == '__main__':
 
 -Play area seems to be working
 -Add structure for buys
--Add a buy monitor
-    Create an error if the player tries to buy something they can't
-    ValueError or not an actual code error, probably not an actual code error.
+-Buy Monitor needs to check gold counts and handle that
 -Bots
     -Move bots to separate files and then import them as needed, probably can get rid of "is bot" at that point, maybe?
 -Structure for cards that are special actions
-    Cards now have a special attribute, just need to set up something for a before or after the card since some cards will care about it.
+    Basic structure for special actions is created.
 -Trash'''
