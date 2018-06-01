@@ -10,6 +10,7 @@ class Card:
         self.money = money
         self.vps = vps
         self.special = special
+        self.buys = buys
 
     def __call__(self):
         return self.name
@@ -28,4 +29,5 @@ laboratory = Card('laboratory',['action'], 5, 1, 2, 0)
 market = Card('market',['action'], 5, 1, 1, 1, buys = 1)
 
 string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 
-'duchy': duchy, 'province': province, 'smithy': smithy, 'village': village, 'curse': curse}
+'duchy': duchy, 'province': province, 'smithy': smithy, 'village': village, 'curse': curse,
+'market': market, 'festival': festival, 'laboratory': laboratory}

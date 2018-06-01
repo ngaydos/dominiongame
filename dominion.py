@@ -49,6 +49,8 @@ class Player:
         self.current_money = 0
         self.draw(5)
         self.available_actions = 0
+        #buys doesn't do anything yet
+        self.available_buys = 0
         self.play_area = []
 
     def draw(self, count = 1):
@@ -79,6 +81,7 @@ class Player:
 
     def take_turn(self, game, bot_player):
         self.available_actions = 1
+        self.available_buys = 1
         if bot_player:
             for card in self.hand.cards:
                 self.play(card, game)
@@ -125,6 +128,13 @@ class Player:
         self.draw(5)
 
     def play(self, card, game):
+        '''
+        plays a card. This process handles all the general rules i.e.
+        +actions, +money, +draw, +buy (not yet, but it will)
+        any special factors in the action card get fed to the play_special function
+        inputs: a card object, a game object
+        outputs: none
+        '''
         if 'action' in card.ctypes:
             if self.available_actions <= 0:
                 print('out of actions')
@@ -132,22 +142,33 @@ class Player:
             else:
                 self.available_actions -= 1
         if card.special == 'early':
-            play_special(card.name, self, game)
+            self.play_special(card, game)
         self.draw(card.draw)
         self.current_money += card.money
         self.available_actions += card.actions
+        self.available_buys += card.buys
         if card.special == 'after':
-            play_special(card.name, self, game)
+            self.play_special(card, game)
         self.play_area.append(card)
         self.hand.cards.remove(card)
 
+    def play_special(self, card, game):
+        pass
+
     def buy(self, card, store):
-        #for now this function is simple but it eventually needs to be capable of checking if the card is in the store
-        #and check if the player has the available gold, manage the number of buys
-        #also you need a gain function eventually which would be similar, but work without caring about those things
-        if card in store:
+        #checks if the player has available buys and if the card selected is in the store
+        if card in store and self.available_buys >= 1:
             self.discard.cards.append(card)
             store.remove(card)
+            self.available_buys -= 1
+        elif card not in store:
+            return "card not in store"
+        elif self.available_buys < 1:
+            return "no buys available"
+
+    def gain(self, card, store):
+        #need to figure out how to deal wiht special cards outside the store that can be gained from elsewhere
+        pass
 
     def calculate_vps(self):
         vpcount = 0
@@ -197,6 +218,8 @@ def create_store():
     for i in range(10):
         store.append(village)
         store.append(smithy)
+        store.append(market)
+        store.append(festival)
     for i in range(12):
         store.append(estate)
         store.append(duchy)
