@@ -163,14 +163,17 @@ class Player:
     def buy(self, card, store):
         #checks if the player has available buys and if the card selected is in the store
         #needs to check the play has enough gold
-        if card in store and self.available_buys >= 1:
+        if card in store and self.available_buys >= 1 and self.current_money >= card.cost:
             self.discard.cards.append(card)
             store.remove(card)
             self.available_buys -= 1
+            self.current_money -= card.cost
         elif card not in store:
             return "card not in store"
         elif self.available_buys < 1:
             return "no buys available"
+        elif self.current_money < card.cost:
+            return "not enough money"
 
     def gain(self, card, store):
         #need to figure out how to deal wiht special cards outside the store that can be gained from elsewhere
