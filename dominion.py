@@ -22,8 +22,6 @@ class Game:
         final_scores = [player.calculate_vps() for player in self.players]
         return (self.players, final_scores)
 
-#possible structure is while game_over() == False and then have game_over check if provinces are gone. Need to check how
-
     def game_over(self):
         if province not in self.store:
             return True
@@ -181,12 +179,25 @@ class Player:
 
     def calculate_vps(self):
         vpcount = 0
+        #card count and gardens count accomodate for gardens if a bit uncleanly
+        card_count = 0
+        gardens_count = 0
         for card in self.hand.cards:
             vpcount += card.vps
+            card_count += 1
+            if card.name = 'gardens':
+                gardens_count += 1
         for card in self.discard.cards:
             vpcount += card.vps
+            card_count += 1
+            if card.name = 'gardens':
+                gardens_count += 1
         for card in self.deck.cards:
             vpcount += card.vps
+            card_count += 1
+            if card.name = 'gardens':
+                gardens_count += 1
+        vpcount += [card_count//10 for gardens in xrange(gardens_count)]
         return vpcount
 
 
