@@ -29,6 +29,7 @@ laboratory = Card('laboratory',['action'], 5, 1, 2, 0)
 market = Card('market',['action'], 5, 1, 1, 1, buys = 1)
 council_room = Card('council room', ['action'], 5, 0, 4, 0, buys = 1, special = 'after')
 witch = Card('witch', ['action'], 5, 0, 2, 0, special = 'after')
+gardens = Card('gardens', ['victorypoint'], 4, 0, 0, 0)
 
 #string to card dict is used when the player is inputting specific play and buy commands
 string_to_card = {'copper': copper, 'silver': silver, 'gold': gold, 'estate': estate, 
