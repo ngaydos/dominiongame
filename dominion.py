@@ -157,6 +157,9 @@ class Player:
         if card.name == 'council room':
             for player in game.players:
                 player.draw(1)
+        if card.name == 'witch':
+            for player in game.players:
+                player.gain(curse)
 
     def buy(self, card, store):
         #checks if the player has available buys and if the card selected is in the store
@@ -175,7 +178,12 @@ class Player:
 
     def gain(self, card, store):
         #need to figure out how to deal wiht special cards outside the store that can be gained from elsewhere
-        pass
+        #this will resolve the gaining required for witch
+        if card in store:
+            self.discard.cards.append(card)
+            store.remove(card)
+        elif card not in store:
+            return "card not in store"
 
     def calculate_vps(self):
         vpcount = 0
