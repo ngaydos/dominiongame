@@ -30,8 +30,10 @@ class Game:
             missing_items = 0
             for item in self.store_items:
                 if item not in self.store:
+                    print(item.name)
                     missing_items += 1
             if missing_items >= 3:
+                print(missing_items)
                 return True
         return False
 
@@ -206,7 +208,7 @@ class Player:
             card_count += 1
             if card.name == 'gardens':
                 gardens_count += 1
-        vpcount += [card_count//10 for gardens in xrange(gardens_count)]
+        vpcount += ((card_count//10) * gardens_count)
         return vpcount
 
 
