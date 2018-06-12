@@ -1,6 +1,7 @@
 import random
 from collections import deque
 from cards import *
+from bots import *
 
 class Game:
 
