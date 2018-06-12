@@ -194,17 +194,17 @@ class Player:
         for card in self.hand.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
         for card in self.discard.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
         for card in self.deck.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
         vpcount += [card_count//10 for gardens in xrange(gardens_count)]
         return vpcount
