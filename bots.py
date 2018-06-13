@@ -1,5 +1,7 @@
-class Big_Money_Bot:
+from dominion import *
 
+class Big_Money_Bot:
+    
     def __init__(self, is_bot = True):
         self.hand = Hand()
         self.deck = Deck()
@@ -10,23 +12,9 @@ class Big_Money_Bot:
         self.current_money = 0
         self.draw(5)
         self.available_actions = 0
-        #buys doesn't do anything yet
         self.available_buys = 0
         self.play_area = []
 
-            def __init__(self, is_bot = True):
-        self.hand = Hand()
-        self.deck = Deck()
-        random.shuffle(self.deck.cards)
-        self.discard = Discard()
-        self.is_bot = is_bot
-        self.vps = None
-        self.current_money = 0
-        self.draw(5)
-        self.available_actions = 0
-        #buys doesn't do anything yet
-        self.available_buys = 0
-        self.play_area = []
 
     def draw(self, count = 1):
         if len(self.deck.cards) < count:
@@ -141,17 +129,17 @@ class Big_Money_Bot:
         for card in self.hand.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
         for card in self.discard.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
         for card in self.deck.cards:
             vpcount += card.vps
             card_count += 1
-            if card.name = 'gardens':
+            if card.name == 'gardens':
                 gardens_count += 1
-        vpcount += [card_count//10 for gardens in xrange(gardens_count)]
+        vpcount += ((card_count//10) * gardens_count)
         return vpcount

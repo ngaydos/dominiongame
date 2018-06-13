@@ -30,10 +30,8 @@ class Game:
             missing_items = 0
             for item in self.store_items:
                 if item not in self.store:
-                    print(item.name)
                     missing_items += 1
             if missing_items >= 3:
-                print(missing_items)
                 return True
         return False
 
