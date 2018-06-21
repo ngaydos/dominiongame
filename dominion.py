@@ -53,9 +53,11 @@ class Player:
         self.play_area = []
 
     def draw(self, count = 1):
+        #moves COUNT cards from deck to hand and handles if shuffling is required.
         if len(self.deck.cards) < count:
             remaining = count - len(self.deck.cards)
             self.draw(len(self.deck.cards))
+            #handles if a player draws more cards than they have total.
             if len(self.discard.cards) < remaining:
                 self.shuffle()
                 self.draw(len(self.deck.cards))
